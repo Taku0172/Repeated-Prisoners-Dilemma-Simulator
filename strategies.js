@@ -69,3 +69,33 @@ export function chooseForgivingTitForTatAction(
         ? "C"
         : "D";
 }
+
+export function chooseGrimTriggerAction(
+    opponentHistory
+) {
+    if (!Array.isArray(opponentHistory)) {
+        throw new Error(
+            "opponentHistory must be an array."
+        );
+    }
+
+    const hasInvalidAction =
+        opponentHistory.some(
+            action =>
+                action !== "C" &&
+                action !== "D"
+        );
+
+    if (hasInvalidAction) {
+        throw new Error(
+            "Opponent actions must be C or D."
+        );
+    }
+
+    const hasOpponentDefected =
+        opponentHistory.includes("D");
+
+    return hasOpponentDefected
+        ? "D"
+        : "C";
+}

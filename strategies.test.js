@@ -2,7 +2,8 @@ import { describe, expect, test } from "vitest";
 
 import {
     chooseTitForTatAction,
-    chooseForgivingTitForTatAction
+    chooseForgivingTitForTatAction,
+    chooseGrimTriggerAction
 } from "./strategies.js";
 
 describe("chooseTitForTatAction", () => {
@@ -109,6 +110,61 @@ describe("chooseForgivingTitForTatAction", () => {
                     ["D"],
                     1.1
                 )
+        ).toThrow();
+    });
+});
+
+describe("chooseGrimTriggerAction", () => {
+    test("初回は協力する", () => {
+        expect(
+            chooseGrimTriggerAction([])
+        ).toBe("C");
+    });
+
+    test("相手が一度も裏切っていなければ協力する", () => {
+        expect(
+            chooseGrimTriggerAction([
+                "C",
+                "C",
+                "C"
+            ])
+        ).toBe("C");
+    });
+
+    test("相手が前回裏切っていれば裏切る", () => {
+        expect(
+            chooseGrimTriggerAction([
+                "C",
+                "C",
+                "D"
+            ])
+        ).toBe("D");
+    });
+
+    test("過去に一度でも裏切りがあれば裏切り続ける", () => {
+        expect(
+            chooseGrimTriggerAction([
+                "C",
+                "D",
+                "C",
+                "C"
+            ])
+        ).toBe("D");
+    });
+
+    test("履歴が配列でなければエラーになる", () => {
+        expect(
+            () => chooseGrimTriggerAction("C")
+        ).toThrow();
+    });
+
+    test("履歴にC・D以外があればエラーになる", () => {
+        expect(
+            () =>
+                chooseGrimTriggerAction([
+                    "C",
+                    "X"
+                ])
         ).toThrow();
     });
 });
