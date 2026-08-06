@@ -259,3 +259,36 @@ describe("simulateGame", () => {
         ).toThrow();
     });
 });
+
+test("eventHistoryが返される", () => {
+
+    const result = simulateGame({
+        strategyA: STRATEGIES.TIT_FOR_TAT,
+        strategyB: STRATEGIES.TIT_FOR_TAT,
+        rounds: 5,
+        errorRate: 0
+    });
+
+    expect(
+        Array.isArray(
+            result.eventHistory
+        )
+    ).toBe(true);
+
+});
+
+test("エラー率1ならイベントが記録される", () => {
+
+    const result = simulateGame({
+        strategyA: STRATEGIES.TIT_FOR_TAT,
+        strategyB: STRATEGIES.TIT_FOR_TAT,
+        rounds: 3,
+        errorRate: 1,
+        randomFn: () => 0
+    });
+
+    expect(
+        result.eventHistory.length
+    ).toBeGreaterThan(0);
+
+});

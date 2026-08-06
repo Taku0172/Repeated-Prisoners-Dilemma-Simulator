@@ -1,3 +1,7 @@
+import {
+    createRoundEvents
+} from "./eventLog.js";
+
 import { getPayoff } from "./payoff.js";
 
 import {
@@ -143,6 +147,7 @@ export function simulateGame({
     const payoffHistoryA = [];
     const payoffHistoryB = [];
     const roundHistory = [];
+    const eventHistory = [];
 
     for (let round = 1; round <= rounds; round++) {
         const result = playRound({
@@ -156,6 +161,18 @@ export function simulateGame({
             forgivenessRate,
             randomFn
         });
+
+        const events =
+            createRoundEvents({
+            round,
+            strategyA,
+            strategyB,
+            historyA,
+            historyB,
+            roundResult: result
+        });
+
+eventHistory.push(...events);
 
         historyA.push(
             result.playerA.actualAction
@@ -188,6 +205,7 @@ export function simulateGame({
         historyB,
         payoffHistoryA,
         payoffHistoryB,
-        roundHistory
+        roundHistory,
+        eventHistory
     };
 }
