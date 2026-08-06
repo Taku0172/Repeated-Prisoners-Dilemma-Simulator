@@ -1,0 +1,57 @@
+body {
+
+    max-width: 1100px;
+
+    margin: auto;
+
+    padding: 20px;
+
+    font-family: Arial;
+
+}
+
+.controls{
+
+    display:flex;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:20px;
+
+}
+
+label{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+button{
+
+    padding:10px 20px;
+
+    cursor:pointer;
+
+}
+
+canvas{
+
+    margin-top:20px;
+
+}
+
+#eventLog{
+
+    max-height:300px;
+
+    overflow:auto;
+
+    border:1px solid #ccc;
+
+    padding:10px;
+
+}

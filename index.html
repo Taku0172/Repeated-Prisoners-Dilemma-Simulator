@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>
+        Repeated Prisoner's Dilemma Simulator
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js">
+    </script>
+</head>
+
+<body>
+
+<h1>
+    Repeated Prisoner's Dilemma Simulator
+</h1>
+
+<div class="controls">
+
+    <div>
+
+        <label>
+
+            Player A
+
+            <select id="strategyA">
+
+                <option value="TIT_FOR_TAT">
+                    Tit for Tat
+                </option>
+
+                <option value="FORGIVING_TIT_FOR_TAT">
+                    Forgiving TFT
+                </option>
+
+                <option value="GRIM_TRIGGER">
+                    Grim Trigger
+                </option>
+
+                <option value="WIN_STAY_LOSE_SHIFT">
+                    Win-Stay Lose-Shift
+                </option>
+
+                <option value="RANDOM">
+                    Random
+                </option>
+
+            </select>
+
+        </label>
+
+    </div>
+
+    <div>
+
+        <label>
+
+            Player B
+
+            <select id="strategyB">
+
+                <option value="TIT_FOR_TAT">
+                    Tit for Tat
+                </option>
+
+                <option value="FORGIVING_TIT_FOR_TAT">
+                    Forgiving TFT
+                </option>
+
+                <option value="GRIM_TRIGGER">
+                    Grim Trigger
+                </option>
+
+                <option value="WIN_STAY_LOSE_SHIFT">
+                    Win-Stay Lose-Shift
+                </option>
+
+                <option value="RANDOM">
+                    Random
+                </option>
+
+            </select>
+
+        </label>
+
+    </div>
+
+    <div>
+
+        <label>
+
+            Rounds
+
+            <input
+                id="rounds"
+                type="number"
+                value="100"
+                min="1">
+
+        </label>
+
+    </div>
+
+    <div>
+
+        <label>
+
+            Error Rate
+
+            <input
+                id="errorRate"
+                type="number"
+                step="0.01"
+                value="0">
+
+        </label>
+
+    </div>
+
+    <button id="runButton">
+
+        Run Simulation
+
+    </button>
+
+</div>
+
+<hr>
+
+<h2>
+
+Statistics
+
+</h2>
+
+<div id="statistics">
+
+</div>
+
+<hr>
+
+<h2>
+
+Payoff Chart
+
+</h2>
+
+<canvas id="payoffChart">
+
+</canvas>
+
+<hr>
+
+<h2>
+
+Event Log
+
+</h2>
+
+<div id="eventLog">
+
+</div>
+
+<script
+    type="module"
+    src="script.js">
+</script>
+
+</body>
+
+</html>
