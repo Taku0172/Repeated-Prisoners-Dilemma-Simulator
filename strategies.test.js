@@ -1,7 +1,8 @@
 import { describe, expect, test } from "vitest";
 
 import {
-    chooseTitForTatAction
+    chooseTitForTatAction,
+    chooseForgivingTitForTatAction
 } from "./strategies.js";
 
 describe("chooseTitForTatAction", () => {
@@ -32,6 +33,82 @@ describe("chooseTitForTatAction", () => {
     test("履歴にC・D以外が含まれる場合はエラーになる", () => {
         expect(
             () => chooseTitForTatAction(["C", "X"])
+        ).toThrow();
+    });
+});
+
+describe("chooseForgivingTitForTatAction", () => {
+    test("初回は協力する", () => {
+        expect(
+            chooseForgivingTitForTatAction([])
+        ).toBe("C");
+    });
+
+    test("相手の前回がCならCを選ぶ", () => {
+        expect(
+            chooseForgivingTitForTatAction(["D", "C"])
+        ).toBe("C");
+    });
+
+    test("相手の前回がDでも許す場合はCを選ぶ", () => {
+        const alwaysForgiveRandom = () => 0.1;
+
+        expect(
+            chooseForgivingTitForTatAction(
+                ["C", "D"],
+                0.2,
+                alwaysForgiveRandom
+            )
+        ).toBe("C");
+    });
+
+    test("相手の前回がDで許さない場合はDを選ぶ", () => {
+        const neverForgiveRandom = () => 0.8;
+
+        expect(
+            chooseForgivingTitForTatAction(
+                ["C", "D"],
+                0.2,
+                neverForgiveRandom
+            )
+        ).toBe("D");
+    });
+
+    test("許し率が0なら必ず報復する", () => {
+        expect(
+            chooseForgivingTitForTatAction(
+                ["D"],
+                0,
+                () => 0
+            )
+        ).toBe("D");
+    });
+
+    test("許し率が1なら必ず許す", () => {
+        expect(
+            chooseForgivingTitForTatAction(
+                ["D"],
+                1,
+                () => 0.999
+            )
+        ).toBe("C");
+    });
+
+    test("許し率が範囲外ならエラーになる", () => {
+        expect(
+            () =>
+                chooseForgivingTitForTatAction(
+                    ["D"],
+                    -0.1
+                )
+        ).toThrow();
+
+        expect(
+            () =>
+                chooseForgivingTitForTatAction(
+                    ["D"],
+                    1.1
+                )
         ).toThrow();
     });
 });
