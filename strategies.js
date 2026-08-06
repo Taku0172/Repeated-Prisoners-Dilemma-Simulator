@@ -189,3 +189,55 @@ export function chooseRandomAction(
         ? "C"
         : "D";
 }
+
+export const STRATEGIES = {
+    TIT_FOR_TAT: "TIT_FOR_TAT",
+    FORGIVING_TIT_FOR_TAT: "FORGIVING_TIT_FOR_TAT",
+    GRIM_TRIGGER: "GRIM_TRIGGER",
+    WIN_STAY_LOSE_SHIFT: "WIN_STAY_LOSE_SHIFT",
+    RANDOM: "RANDOM"
+};
+
+export function chooseStrategyAction({
+    strategy,
+    ownHistory = [],
+    opponentHistory = [],
+    ownPayoffHistory = [],
+    forgivenessRate = 0.2,
+    randomFn = Math.random
+}) {
+    switch (strategy) {
+        case STRATEGIES.TIT_FOR_TAT:
+            return chooseTitForTatAction(
+                opponentHistory
+            );
+
+        case STRATEGIES.FORGIVING_TIT_FOR_TAT:
+            return chooseForgivingTitForTatAction(
+                opponentHistory,
+                forgivenessRate,
+                randomFn
+            );
+
+        case STRATEGIES.GRIM_TRIGGER:
+            return chooseGrimTriggerAction(
+                opponentHistory
+            );
+
+        case STRATEGIES.WIN_STAY_LOSE_SHIFT:
+            return chooseWinStayLoseShiftAction(
+                ownHistory,
+                ownPayoffHistory
+            );
+
+        case STRATEGIES.RANDOM:
+            return chooseRandomAction(
+                randomFn
+            );
+
+        default:
+            throw new Error(
+                `Unknown strategy: ${strategy}`
+            );
+    }
+}

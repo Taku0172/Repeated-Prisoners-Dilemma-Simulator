@@ -5,7 +5,9 @@ import {
     chooseForgivingTitForTatAction,
     chooseGrimTriggerAction,
     chooseWinStayLoseShiftAction,
-    chooseRandomAction
+    chooseRandomAction,
+    STRATEGIES,
+    chooseStrategyAction
 } from "./strategies.js";
 
 describe("chooseTitForTatAction", () => {
@@ -266,6 +268,67 @@ describe("chooseRandomAction", () => {
     test("randomFnが関数でなければエラーになる", () => {
         expect(
             () => chooseRandomAction(0.2)
+        ).toThrow();
+    });
+});
+
+describe("chooseStrategyAction", () => {
+    test("Tit for Tatを呼び出せる", () => {
+        const action = chooseStrategyAction({
+            strategy: STRATEGIES.TIT_FOR_TAT,
+            opponentHistory: ["C", "D"]
+        });
+
+        expect(action).toBe("D");
+    });
+
+    test("Forgiving Tit for Tatを呼び出せる", () => {
+        const action = chooseStrategyAction({
+            strategy:
+                STRATEGIES.FORGIVING_TIT_FOR_TAT,
+            opponentHistory: ["D"],
+            forgivenessRate: 1,
+            randomFn: () => 0.9
+        });
+
+        expect(action).toBe("C");
+    });
+
+    test("Grim Triggerを呼び出せる", () => {
+        const action = chooseStrategyAction({
+            strategy: STRATEGIES.GRIM_TRIGGER,
+            opponentHistory: ["C", "D", "C"]
+        });
+
+        expect(action).toBe("D");
+    });
+
+    test("Win-Stay Lose-Shiftを呼び出せる", () => {
+        const action = chooseStrategyAction({
+            strategy:
+                STRATEGIES.WIN_STAY_LOSE_SHIFT,
+            ownHistory: ["C"],
+            ownPayoffHistory: [0]
+        });
+
+        expect(action).toBe("D");
+    });
+
+    test("Randomを呼び出せる", () => {
+        const action = chooseStrategyAction({
+            strategy: STRATEGIES.RANDOM,
+            randomFn: () => 0.2
+        });
+
+        expect(action).toBe("C");
+    });
+
+    test("存在しない戦略ならエラーになる", () => {
+        expect(
+            () =>
+                chooseStrategyAction({
+                    strategy: "UNKNOWN"
+                })
         ).toThrow();
     });
 });
