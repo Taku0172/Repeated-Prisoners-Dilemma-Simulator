@@ -1,0 +1,26 @@
+{
+  "name": "repeated-prisoners-dilemma-simulator",
+  "version": "1.0.0",
+  "description": "An interactive simulator for repeated prisoner's dilemma strategies under implementation errors",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Taku0172/Repeated-Prisoners-Dilemma-Simulator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Taku0172/Repeated-Prisoners-Dilemma-Simulator/issues"
+  },
+  "homepage": "https://github.com/Taku0172/Repeated-Prisoners-Dilemma-Simulator#readme",
+  "devDependencies": {
+    "vitest": "^4.1.10"
+  }
+}
