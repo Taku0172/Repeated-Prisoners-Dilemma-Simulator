@@ -4,7 +4,8 @@ import {
     chooseTitForTatAction,
     chooseForgivingTitForTatAction,
     chooseGrimTriggerAction,
-    chooseWinStayLoseShiftAction
+    chooseWinStayLoseShiftAction,
+    chooseRandomAction
 } from "./strategies.js";
 
 describe("chooseTitForTatAction", () => {
@@ -233,6 +234,38 @@ describe("chooseWinStayLoseShiftAction", () => {
                     ["X"],
                     [3]
                 )
+        ).toThrow();
+    });
+});
+
+describe("chooseRandomAction", () => {
+    test("乱数が0.5未満ならCを選ぶ", () => {
+        const lowRandom = () => 0.2;
+
+        expect(
+            chooseRandomAction(lowRandom)
+        ).toBe("C");
+    });
+
+    test("乱数が0.5以上ならDを選ぶ", () => {
+        const highRandom = () => 0.8;
+
+        expect(
+            chooseRandomAction(highRandom)
+        ).toBe("D");
+    });
+
+    test("境界値0.5ならDを選ぶ", () => {
+        const boundaryRandom = () => 0.5;
+
+        expect(
+            chooseRandomAction(boundaryRandom)
+        ).toBe("D");
+    });
+
+    test("randomFnが関数でなければエラーになる", () => {
+        expect(
+            () => chooseRandomAction(0.2)
         ).toThrow();
     });
 });

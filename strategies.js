@@ -175,3 +175,17 @@ export function chooseWinStayLoseShiftAction(
         ? "D"
         : "C";
 }
+
+export function chooseRandomAction(
+    randomFn = Math.random
+) {
+    if (typeof randomFn !== "function") {
+        throw new Error(
+            "randomFn must be a function."
+        );
+    }
+
+    return randomFn() < 0.5
+        ? "C"
+        : "D";
+}
