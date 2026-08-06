@@ -2,7 +2,8 @@ import { describe, expect, test } from "vitest";
 
 import {
     applyImplementationError,
-    playRound
+    playRound,
+    simulateGame
 } from "./gameLogic.js";
 
 import {
@@ -173,5 +174,88 @@ describe("playRound", () => {
         });
 
         expect(result.playerA.actualAction).toBe("D");
+    });
+});
+
+describe("simulateGame", () => {
+    test("指定したラウンド数だけ結果を保存する", () => {
+        const result = simulateGame({
+            strategyA: STRATEGIES.TIT_FOR_TAT,
+            strategyB: STRATEGIES.TIT_FOR_TAT,
+            rounds: 10,
+            errorRate: 0
+        });
+
+        expect(result.historyA).toHaveLength(10);
+        expect(result.historyB).toHaveLength(10);
+        expect(result.payoffHistoryA).toHaveLength(10);
+        expect(result.payoffHistoryB).toHaveLength(10);
+        expect(result.roundHistory).toHaveLength(10);
+    });
+
+    test("ノイズなしのTFT同士は全ラウンドで協力する", () => {
+        const result = simulateGame({
+            strategyA: STRATEGIES.TIT_FOR_TAT,
+            strategyB: STRATEGIES.TIT_FOR_TAT,
+            rounds: 20,
+            errorRate: 0
+        });
+
+        expect(
+            result.historyA.every(
+                action => action === "C"
+            )
+        ).toBe(true);
+
+        expect(
+            result.historyB.every(
+                action => action === "C"
+            )
+        ).toBe(true);
+    });
+
+    test("ノイズなしのTFT同士は毎期3点を得る", () => {
+        const result = simulateGame({
+            strategyA: STRATEGIES.TIT_FOR_TAT,
+            strategyB: STRATEGIES.TIT_FOR_TAT,
+            rounds: 10,
+            errorRate: 0
+        });
+
+        expect(result.payoffHistoryA).toEqual(
+            Array(10).fill(3)
+        );
+
+        expect(result.payoffHistoryB).toEqual(
+            Array(10).fill(3)
+        );
+    });
+
+    test("各ラウンドにラウンド番号が記録される", () => {
+        const result = simulateGame({
+            strategyA: STRATEGIES.GRIM_TRIGGER,
+            strategyB: STRATEGIES.TIT_FOR_TAT,
+            rounds: 3,
+            errorRate: 0
+        });
+
+        expect(
+            result.roundHistory.map(
+                item => item.round
+            )
+        ).toEqual([1, 2, 3]);
+    });
+
+    test("ラウンド数が0ならエラーになる", () => {
+        expect(
+            () =>
+                simulateGame({
+                    strategyA:
+                        STRATEGIES.TIT_FOR_TAT,
+                    strategyB:
+                        STRATEGIES.TIT_FOR_TAT,
+                    rounds: 0
+                })
+        ).toThrow();
     });
 });

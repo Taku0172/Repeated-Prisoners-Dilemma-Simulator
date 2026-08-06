@@ -123,3 +123,71 @@ export function playRound({
         }
     };
 }
+
+export function simulateGame({
+    strategyA,
+    strategyB,
+    rounds = 100,
+    errorRate = 0,
+    forgivenessRate = 0.2,
+    randomFn = Math.random
+}) {
+    if (!Number.isInteger(rounds) || rounds < 1) {
+        throw new Error(
+            "rounds must be a positive integer."
+        );
+    }
+
+    const historyA = [];
+    const historyB = [];
+    const payoffHistoryA = [];
+    const payoffHistoryB = [];
+    const roundHistory = [];
+
+    for (let round = 1; round <= rounds; round++) {
+        const result = playRound({
+            strategyA,
+            strategyB,
+            historyA,
+            historyB,
+            payoffHistoryA,
+            payoffHistoryB,
+            errorRate,
+            forgivenessRate,
+            randomFn
+        });
+
+        historyA.push(
+            result.playerA.actualAction
+        );
+
+        historyB.push(
+            result.playerB.actualAction
+        );
+
+        payoffHistoryA.push(
+            result.playerA.payoff
+        );
+
+        payoffHistoryB.push(
+            result.playerB.payoff
+        );
+
+        roundHistory.push({
+            round,
+            playerA: result.playerA,
+            playerB: result.playerB
+        });
+    }
+
+    return {
+        strategyA,
+        strategyB,
+        rounds,
+        historyA,
+        historyB,
+        payoffHistoryA,
+        payoffHistoryB,
+        roundHistory
+    };
+}
