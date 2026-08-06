@@ -99,3 +99,79 @@ export function chooseGrimTriggerAction(
         ? "D"
         : "C";
 }
+
+export function chooseWinStayLoseShiftAction(
+    ownHistory,
+    ownPayoffHistory
+) {
+    if (!Array.isArray(ownHistory)) {
+        throw new Error(
+            "ownHistory must be an array."
+        );
+    }
+
+    if (!Array.isArray(ownPayoffHistory)) {
+        throw new Error(
+            "ownPayoffHistory must be an array."
+        );
+    }
+
+    if (
+        ownHistory.length !==
+        ownPayoffHistory.length
+    ) {
+        throw new Error(
+            "History lengths must match."
+        );
+    }
+
+    const hasInvalidAction =
+        ownHistory.some(
+            action =>
+                action !== "C" &&
+                action !== "D"
+        );
+
+    if (hasInvalidAction) {
+        throw new Error(
+            "Actions must be C or D."
+        );
+    }
+
+    const hasInvalidPayoff =
+        ownPayoffHistory.some(
+            payoff =>
+                typeof payoff !== "number" ||
+                !Number.isFinite(payoff)
+        );
+
+    if (hasInvalidPayoff) {
+        throw new Error(
+            "Payoffs must be finite numbers."
+        );
+    }
+
+    if (ownHistory.length === 0) {
+        return "C";
+    }
+
+    const lastAction =
+        ownHistory[ownHistory.length - 1];
+
+    const lastPayoff =
+        ownPayoffHistory[
+            ownPayoffHistory.length - 1
+        ];
+
+    const isWin =
+        lastPayoff === 3 ||
+        lastPayoff === 5;
+
+    if (isWin) {
+        return lastAction;
+    }
+
+    return lastAction === "C"
+        ? "D"
+        : "C";
+}

@@ -3,7 +3,8 @@ import { describe, expect, test } from "vitest";
 import {
     chooseTitForTatAction,
     chooseForgivingTitForTatAction,
-    chooseGrimTriggerAction
+    chooseGrimTriggerAction,
+    chooseWinStayLoseShiftAction
 } from "./strategies.js";
 
 describe("chooseTitForTatAction", () => {
@@ -165,6 +166,73 @@ describe("chooseGrimTriggerAction", () => {
                     "C",
                     "X"
                 ])
+        ).toThrow();
+    });
+});
+
+describe("chooseWinStayLoseShiftAction", () => {
+    test("初回は協力する", () => {
+        expect(
+            chooseWinStayLoseShiftAction(
+                [],
+                []
+            )
+        ).toBe("C");
+    });
+
+    test("前回Cで3点ならCを続ける", () => {
+        expect(
+            chooseWinStayLoseShiftAction(
+                ["C"],
+                [3]
+            )
+        ).toBe("C");
+    });
+
+    test("前回Dで5点ならDを続ける", () => {
+        expect(
+            chooseWinStayLoseShiftAction(
+                ["D"],
+                [5]
+            )
+        ).toBe("D");
+    });
+
+    test("前回Cで0点ならDに切り替える", () => {
+        expect(
+            chooseWinStayLoseShiftAction(
+                ["C"],
+                [0]
+            )
+        ).toBe("D");
+    });
+
+    test("前回Dで1点ならCに切り替える", () => {
+        expect(
+            chooseWinStayLoseShiftAction(
+                ["D"],
+                [1]
+            )
+        ).toBe("C");
+    });
+
+    test("行動履歴と利得履歴の長さが違えばエラーになる", () => {
+        expect(
+            () =>
+                chooseWinStayLoseShiftAction(
+                    ["C", "D"],
+                    [3]
+                )
+        ).toThrow();
+    });
+
+    test("履歴にC・D以外が含まれればエラーになる", () => {
+        expect(
+            () =>
+                chooseWinStayLoseShiftAction(
+                    ["X"],
+                    [3]
+                )
         ).toThrow();
     });
 });
