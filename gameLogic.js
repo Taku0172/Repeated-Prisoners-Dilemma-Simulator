@@ -1,3 +1,9 @@
+import { getPayoff } from "./payoff.js";
+
+import {
+    chooseStrategyAction
+} from "./strategies.js";
+
 export function applyImplementationError(
     intendedAction,
     errorRate,
@@ -42,5 +48,78 @@ export function applyImplementationError(
         intendedAction,
         actualAction,
         errorOccurred
+    };
+}
+
+export function playRound({
+    strategyA,
+    strategyB,
+    historyA = [],
+    historyB = [],
+    payoffHistoryA = [],
+    payoffHistoryB = [],
+    errorRate = 0,
+    forgivenessRate = 0.2,
+    randomFn = Math.random
+}) {
+    if (!Array.isArray(historyA) || !Array.isArray(historyB)) {
+        throw new Error("Action histories must be arrays.");
+    }
+
+    if (
+        !Array.isArray(payoffHistoryA) ||
+        !Array.isArray(payoffHistoryB)
+    ) {
+        throw new Error("Payoff histories must be arrays.");
+    }
+
+    const intendedActionA = chooseStrategyAction({
+        strategy: strategyA,
+        ownHistory: historyA,
+        opponentHistory: historyB,
+        ownPayoffHistory: payoffHistoryA,
+        forgivenessRate,
+        randomFn
+    });
+
+    const intendedActionB = chooseStrategyAction({
+        strategy: strategyB,
+        ownHistory: historyB,
+        opponentHistory: historyA,
+        ownPayoffHistory: payoffHistoryB,
+        forgivenessRate,
+        randomFn
+    });
+
+    const actionResultA = applyImplementationError(
+        intendedActionA,
+        errorRate,
+        randomFn
+    );
+
+    const actionResultB = applyImplementationError(
+        intendedActionB,
+        errorRate,
+        randomFn
+    );
+
+    const payoff = getPayoff(
+        actionResultA.actualAction,
+        actionResultB.actualAction
+    );
+
+    return {
+        playerA: {
+            intendedAction: intendedActionA,
+            actualAction: actionResultA.actualAction,
+            errorOccurred: actionResultA.errorOccurred,
+            payoff: payoff.playerA
+        },
+        playerB: {
+            intendedAction: intendedActionB,
+            actualAction: actionResultB.actualAction,
+            errorOccurred: actionResultB.errorOccurred,
+            payoff: payoff.playerB
+        }
     };
 }

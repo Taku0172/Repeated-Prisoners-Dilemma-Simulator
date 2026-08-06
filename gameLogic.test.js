@@ -1,8 +1,13 @@
 import { describe, expect, test } from "vitest";
 
 import {
-    applyImplementationError
+    applyImplementationError,
+    playRound
 } from "./gameLogic.js";
+
+import {
+    STRATEGIES
+} from "./strategies.js";
 
 describe("applyImplementationError", () => {
     test("エラー率0ならCはCのまま", () => {
@@ -106,5 +111,67 @@ describe("applyImplementationError", () => {
                     1.1
                 )
         ).toThrow();
+    });
+});
+
+describe("playRound", () => {
+    test("TFT同士の初回は相互協力になる", () => {
+        const result = playRound({
+            strategyA: STRATEGIES.TIT_FOR_TAT,
+            strategyB: STRATEGIES.TIT_FOR_TAT,
+            errorRate: 0
+        });
+
+        expect(result.playerA.actualAction).toBe("C");
+        expect(result.playerB.actualAction).toBe("C");
+        expect(result.playerA.payoff).toBe(3);
+        expect(result.playerB.payoff).toBe(3);
+    });
+
+    test("TFTは相手の前回のDを模倣する", () => {
+        const result = playRound({
+            strategyA: STRATEGIES.TIT_FOR_TAT,
+            strategyB: STRATEGIES.TIT_FOR_TAT,
+            historyA: ["C"],
+            historyB: ["D"],
+            payoffHistoryA: [0],
+            payoffHistoryB: [5],
+            errorRate: 0
+        });
+
+        expect(result.playerA.actualAction).toBe("D");
+        expect(result.playerB.actualAction).toBe("C");
+        expect(result.playerA.payoff).toBe(5);
+        expect(result.playerB.payoff).toBe(0);
+    });
+
+    test("実装ミスが発生したか記録される", () => {
+        const result = playRound({
+            strategyA: STRATEGIES.TIT_FOR_TAT,
+            strategyB: STRATEGIES.TIT_FOR_TAT,
+            errorRate: 1,
+            randomFn: () => 0
+        });
+
+        expect(result.playerA.intendedAction).toBe("C");
+        expect(result.playerA.actualAction).toBe("D");
+        expect(result.playerA.errorOccurred).toBe(true);
+
+        expect(result.playerB.actualAction).toBe("D");
+        expect(result.playerB.errorOccurred).toBe(true);
+    });
+
+    test("Grim Triggerは過去の裏切りを受けてDを選ぶ", () => {
+        const result = playRound({
+            strategyA: STRATEGIES.GRIM_TRIGGER,
+            strategyB: STRATEGIES.TIT_FOR_TAT,
+            historyA: ["C"],
+            historyB: ["D"],
+            payoffHistoryA: [0],
+            payoffHistoryB: [5],
+            errorRate: 0
+        });
+
+        expect(result.playerA.actualAction).toBe("D");
     });
 });
