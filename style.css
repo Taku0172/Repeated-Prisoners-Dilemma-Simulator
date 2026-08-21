@@ -55,3 +55,337 @@ canvas{
     padding:10px;
 
 }
+
+/* =========================
+   Base Sections
+========================= */
+
+.description {
+    margin-bottom: 32px;
+    color: #555;
+    line-height: 1.8;
+}
+
+.game-structure,
+.payoff-structure,
+.strategy-guide {
+    margin: 40px 0;
+    padding: 28px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fafafa;
+}
+
+.game-structure h2,
+.payoff-structure h2,
+.strategy-guide h2 {
+    margin-top: 0;
+    margin-bottom: 22px;
+}
+
+
+/* =========================
+   Game Structure
+========================= */
+
+.structure-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.structure-card {
+    padding: 18px;
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+}
+
+.structure-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.structure-card p {
+    margin: 0;
+    line-height: 1.7;
+    color: #555;
+}
+
+
+/* =========================
+   Payoff Table
+========================= */
+
+.payoff-table {
+    width: 100%;
+    max-width: 650px;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background: white;
+}
+
+.payoff-table th,
+.payoff-table td {
+    border: 1px solid #dcdcdc;
+    padding: 14px;
+    text-align: center;
+}
+
+.payoff-table th {
+    background: #f1f3f5;
+}
+
+.payoff-note {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+}
+
+
+/* =========================
+   Strategy Guide
+========================= */
+
+.strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.strategy-card {
+    padding: 18px;
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+}
+
+.strategy-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.strategy-card p {
+    margin: 0;
+    line-height: 1.7;
+    color: #555;
+}
+
+
+/* =========================
+   Controls
+========================= */
+
+.controls {
+    margin-top: 40px;
+    padding: 24px;
+    background: #f7f7f7;
+    border-radius: 12px;
+}
+
+.controls > div {
+    min-width: 180px;
+}
+
+select,
+input {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+button {
+    border: none;
+    border-radius: 6px;
+    background: #222;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 750px) {
+
+    .structure-grid,
+    .strategy-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .controls > div,
+    .controls button {
+        width: 100%;
+    }
+}
+
+/* =========================
+   Results
+========================= */
+
+.results-section,
+.event-section {
+    margin: 40px 0;
+}
+
+.results-section > h2,
+.event-section > h2 {
+    margin-bottom: 20px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+.result-card {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+}
+
+.result-card h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.result-description {
+    margin-top: 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.placeholder-text {
+    color: #888;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   Event Log
+========================= */
+
+.event-section {
+    padding: 24px;
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+}
+
+#eventLog {
+    max-height: 300px;
+    overflow-y: auto;
+
+    padding: 16px;
+
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+
+/* =========================
+   Responsive Results
+========================= */
+
+@media (max-width: 800px) {
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =========================
+   Round Flow
+========================= */
+
+.round-flow {
+    margin: 40px 0;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+}
+
+.round-flow h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+.flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.flow-step {
+    flex: 1;
+    min-width: 0;
+    padding: 16px;
+    background: #f7f7f7;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.flow-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    margin-bottom: 8px;
+
+    border-radius: 50%;
+    background: #222;
+    color: white;
+
+    font-weight: bold;
+}
+
+.flow-step h3 {
+    margin: 4px 0 10px;
+    font-size: 15px;
+}
+
+.flow-step p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.flow-arrow {
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+@media (max-width: 950px) {
+
+    .flow-row {
+        flex-direction: column;
+    }
+
+    .flow-arrow {
+        justify-content: center;
+        transform: rotate(90deg);
+    }
+}
