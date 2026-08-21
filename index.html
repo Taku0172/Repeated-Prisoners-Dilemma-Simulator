@@ -321,13 +321,22 @@
         </div>
 
         <div class="result-card">
-            <h3>Payoff Chart</h3>
+            <h3>累積利得の推移</h3>
 
             <p class="result-description">
-                各プレイヤーの利得の推移を確認できます。
+                各ラウンドまでに獲得した利得の合計を表示します。
+                線の傾きが大きいほど、その期間に高い利得を獲得しています。
             </p>
 
             <canvas id="payoffChart"></canvas>
+
+            <div class="chart-guide">
+                <p>
+                    <strong>見方：</strong>
+                    2本の線が近い場合は両者が同程度の利得を獲得し、
+                    線の差が広がる場合は一方がより高い利得を得ています。
+                </p>
+            </div>
         </div>
 
     </div>
