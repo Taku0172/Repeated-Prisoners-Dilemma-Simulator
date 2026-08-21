@@ -62,28 +62,93 @@ runButton.addEventListener(
                 result.historyB
 
             );
+        
+        const implementationErrorCount =
+            result.eventHistory.filter(
+                event =>
+                    event.type === "IMPLEMENTATION_ERROR"
+            ).length;
+
+        const cooperationBreakdownCount =
+            result.eventHistory.filter(
+                event =>
+                    event.type === "COOPERATION_BREAKDOWN"
+            ).length;
+
+        const cooperationRecoveryCount =
+            result.eventHistory.filter(
+                event =>
+                    event.type === "COOPERATION_RECOVERY"
+            ).length;
+
+        const grimTriggerCount =
+            result.eventHistory.filter(
+                event =>
+                    event.type === "GRIM_TRIGGER_ACTIVATED"
+            ).length;
 
         statisticsDiv.innerHTML = `
-            <p>
-                Player A 平均利得：
-                ${stats.averagePayoffA.toFixed(2)}
-            </p>
+            <div class="stats-grid">
 
-            <p>
-                Player B 平均利得：
-                ${stats.averagePayoffB.toFixed(2)}
-            </p>
+                <div class="stat-card">
+                    <span>Player A 平均利得</span>
+                    <strong>
+                        ${stats.averagePayoffA.toFixed(2)}
+                    </strong>
+                </div>
 
-            <p>
-                Player A 協力率：
-                ${(stats.cooperationRateA*100).toFixed(1)}%
-            </p>
+                <div class="stat-card">
+                    <span>Player B 平均利得</span>
+                    <strong>
+                        ${stats.averagePayoffB.toFixed(2)}
+                    </strong>
+                </div>
 
-            <p>
-                Player B 協力率：
-                ${(stats.cooperationRateB*100).toFixed(1)}%
-            </p>
+                <div class="stat-card">
+                    <span>Player A 協力率</span>
+                    <strong>
+                        ${(stats.cooperationRateA * 100).toFixed(1)}%
+                    </strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Player B 協力率</span>
+                    <strong>
+                        ${(stats.cooperationRateB * 100).toFixed(1)}%
+                    </strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>実装ミス回数</span>
+                    <strong>
+                        ${implementationErrorCount}
+                    </strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>協力崩壊回数</span>
+                    <strong>
+                        ${cooperationBreakdownCount}
+                    </strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>協力回復回数</span>
+                    <strong>
+                        ${cooperationRecoveryCount}
+                    </strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Grim Trigger発動回数</span>
+                    <strong>
+                        ${grimTriggerCount}
+                    </strong>
+                </div>
+
+            </div>
         `;
+
         const labels =
             result.payoffHistoryA.map(
                 (_, index) => index + 1
@@ -157,12 +222,15 @@ runButton.addEventListener(
             }
         );
         if (result.eventHistory.length === 0) {
+
             eventLogDiv.innerHTML = `
                 <p class="placeholder-text">
                     重要なイベントは発生しませんでした。
                 </p>
             `;
+
         } else {
+
             eventLogDiv.innerHTML =
                 result.eventHistory
                     .map(event => {
@@ -177,10 +245,19 @@ runButton.addEventListener(
                             eventLabel = "Grim Trigger 発動";
                         }
 
+                        if (event.type === "COOPERATION_BREAKDOWN") {
+                            eventLabel = "協力崩壊";
+                        }
+
+                        if (event.type === "COOPERATION_RECOVERY") {
+                            eventLabel = "協力回復";
+                        }
+
                         return `
                             <div class="event-item ${event.type}">
 
                                 <div class="event-header">
+
                                     <strong>
                                         Round ${event.round}
                                     </strong>
@@ -188,6 +265,7 @@ runButton.addEventListener(
                                     <span class="event-label">
                                         ${eventLabel}
                                     </span>
+
                                 </div>
 
                                 <p>
@@ -198,7 +276,6 @@ runButton.addEventListener(
                         `;
                     })
                     .join("");
-                    join("");
         }
 
     }

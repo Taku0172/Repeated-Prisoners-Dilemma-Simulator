@@ -488,3 +488,59 @@ button:hover {
 .GRIM_TRIGGER_ACTIVATED .event-label {
     background: #dddddd;
 }
+
+.COOPERATION_BREAKDOWN {
+    border-left: 4px solid;
+    padding-left: 12px;
+}
+
+.COOPERATION_RECOVERY {
+    border-left: 4px solid;
+    padding-left: 12px;
+}
+
+.COOPERATION_BREAKDOWN .event-label {
+    background: #eeeeee;
+}
+
+.COOPERATION_RECOVERY .event-label {
+    background: #dddddd;
+}
+
+/* =========================
+   Statistics Cards
+========================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.stat-card {
+    padding: 16px;
+
+    background: #f7f7f7;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.stat-card span {
+    font-size: 12px;
+    color: #666;
+}
+
+.stat-card strong {
+    font-size: 22px;
+}
+
+@media (max-width: 600px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
