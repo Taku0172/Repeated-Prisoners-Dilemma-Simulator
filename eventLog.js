@@ -80,5 +80,56 @@ export function createRoundEvents({
         });
     }
 
-    return events;
+const hasPreviousRound =
+    historyA.length >= 2 &&
+    historyB.length >= 2;
+
+if (hasPreviousRound) {
+    const previousActionA =
+        historyA[historyA.length - 2];
+
+    const previousActionB =
+        historyB[historyB.length - 2];
+
+    const currentActionA =
+        historyA[historyA.length - 1];
+
+    const currentActionB =
+        historyB[historyB.length - 1];
+
+    const previousMutualCooperation =
+        previousActionA === "C" &&
+        previousActionB === "C";
+
+    const currentMutualCooperation =
+        currentActionA === "C" &&
+        currentActionB === "C";
+
+    if (
+        previousMutualCooperation &&
+        !currentMutualCooperation
+    ) {
+        events.push({
+            round,
+            type: "COOPERATION_BREAKDOWN",
+            player: null,
+            message:
+                "相互協力が崩れました。"
+        });
+    }
+
+    if (
+        !previousMutualCooperation &&
+        currentMutualCooperation
+    ) {
+        events.push({
+            round,
+            type: "COOPERATION_RECOVERY",
+            player: null,
+            message:
+                "相互協力が回復しました。"
+        });
+    }
+}
+return events;
 }

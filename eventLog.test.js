@@ -26,11 +26,20 @@ describe("createRoundEvents", () => {
             }
         });
 
-        expect(events).toHaveLength(1);
-        expect(events[0].type).toBe(
-            "IMPLEMENTATION_ERROR"
-        );
-        expect(events[0].player).toBe("A");
+        expect(
+            events.some(
+                event =>
+                    event.type === "IMPLEMENTATION_ERROR" &&
+                    event.player === "A"
+            )
+        ).toBe(true);
+
+        expect(
+            events.some(
+                event =>
+                    event.type === "COOPERATION_BREAKDOWN"
+            )
+        ).toBe(true);
     });
 
     test("両者にミスがなければイベントは空", () => {
@@ -132,5 +141,104 @@ describe("createRoundEvents", () => {
                     }
                 })
         ).toThrow();
+    });
+    test("C,Cから少なくとも一方がDになると協力崩壊を記録する", () => {
+        const events = createRoundEvents({
+            round: 3,
+            strategyA: "TIT_FOR_TAT",
+            strategyB: "TIT_FOR_TAT",
+
+            historyA: ["C", "C", "C"],
+            historyB: ["C", "C", "D"],
+
+            roundResult: {
+                playerA: {
+                    intendedAction: "C",
+                    actualAction: "C",
+                    errorOccurred: false
+                },
+                playerB: {
+                    intendedAction: "D",
+                    actualAction: "D",
+                    errorOccurred: false
+                }
+            }
+        });
+
+        expect(
+            events.some(
+                event =>
+                    event.type ===
+                    "COOPERATION_BREAKDOWN"
+            )
+        ).toBe(true);
+    });
+
+
+    test("少なくとも一方がDの状態からC,Cになると協力回復を記録する", () => {
+        const events = createRoundEvents({
+            round: 3,
+            strategyA: "TIT_FOR_TAT",
+            strategyB: "TIT_FOR_TAT",
+
+            historyA: ["C", "D", "C"],
+            historyB: ["C", "D", "C"],
+
+            roundResult: {
+                playerA: {
+                    intendedAction: "C",
+                    actualAction: "C",
+                    errorOccurred: false
+                },
+                playerB: {
+                    intendedAction: "C",
+                    actualAction: "C",
+                    errorOccurred: false
+                }
+            }
+        });
+
+        expect(
+            events.some(
+                event =>
+                    event.type ===
+                    "COOPERATION_RECOVERY"
+            )
+        ).toBe(true);
+    });
+
+
+    test("C,Cが継続している場合は協力状態イベントを記録しない", () => {
+        const events = createRoundEvents({
+            round: 3,
+            strategyA: "TIT_FOR_TAT",
+            strategyB: "TIT_FOR_TAT",
+
+            historyA: ["C", "C", "C"],
+            historyB: ["C", "C", "C"],
+
+            roundResult: {
+                playerA: {
+                    intendedAction: "C",
+                    actualAction: "C",
+                    errorOccurred: false
+                },
+                playerB: {
+                    intendedAction: "C",
+                    actualAction: "C",
+                    errorOccurred: false
+                }
+            }
+        });
+
+        expect(
+            events.some(
+                event =>
+                    event.type ===
+                        "COOPERATION_BREAKDOWN" ||
+                    event.type ===
+                        "COOPERATION_RECOVERY"
+            )
+        ).toBe(false);
     });
 });

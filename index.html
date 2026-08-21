@@ -155,115 +155,88 @@
 
 </section>
 
-<div class="controls">
+<section class="simulation-settings">
 
-    <div>
+    <h2>シミュレーション設定</h2>
 
-        <label>
+    <p class="settings-description">
+        2人の戦略、繰り返し回数、実装ミスの確率を設定してください。
+    </p>
 
-            Player A
+    <div class="controls">
+
+        <div>
+            <label for="strategyA">
+                Player A の戦略
+            </label>
 
             <select id="strategyA">
-
-                <option value="TIT_FOR_TAT">
-                    Tit for Tat
-                </option>
-
-                <option value="FORGIVING_TIT_FOR_TAT">
-                    Forgiving TFT
-                </option>
-
-                <option value="GRIM_TRIGGER">
-                    Grim Trigger
-                </option>
-
-                <option value="WIN_STAY_LOSE_SHIFT">
-                    Win-Stay Lose-Shift
-                </option>
-
-                <option value="RANDOM">
-                    Random
-                </option>
-
+                <option value="TIT_FOR_TAT">Tit for Tat</option>
+                <option value="FORGIVING_TIT_FOR_TAT">Forgiving TFT</option>
+                <option value="GRIM_TRIGGER">Grim Trigger</option>
+                <option value="WIN_STAY_LOSE_SHIFT">Win-Stay Lose-Shift</option>
+                <option value="RANDOM">Random</option>
             </select>
+        </div>
 
-        </label>
-
-    </div>
-
-    <div>
-
-        <label>
-
-            Player B
+        <div>
+            <label for="strategyB">
+                Player B の戦略
+            </label>
 
             <select id="strategyB">
-
-                <option value="TIT_FOR_TAT">
-                    Tit for Tat
-                </option>
-
-                <option value="FORGIVING_TIT_FOR_TAT">
-                    Forgiving TFT
-                </option>
-
-                <option value="GRIM_TRIGGER">
-                    Grim Trigger
-                </option>
-
-                <option value="WIN_STAY_LOSE_SHIFT">
-                    Win-Stay Lose-Shift
-                </option>
-
-                <option value="RANDOM">
-                    Random
-                </option>
-
+                <option value="TIT_FOR_TAT">Tit for Tat</option>
+                <option value="FORGIVING_TIT_FOR_TAT">Forgiving TFT</option>
+                <option value="GRIM_TRIGGER">Grim Trigger</option>
+                <option value="WIN_STAY_LOSE_SHIFT">Win-Stay Lose-Shift</option>
+                <option value="RANDOM">Random</option>
             </select>
+        </div>
 
-        </label>
-
-    </div>
-
-    <div>
-
-        <label>
-
-            Rounds
+        <div>
+            <label for="rounds">
+                繰り返し回数
+            </label>
 
             <input
                 id="rounds"
                 type="number"
                 value="100"
-                min="1">
+                min="1"
+                max="10000"
+            >
 
-        </label>
+            <small>
+                ゲームを繰り返すラウンド数
+            </small>
+        </div>
 
-    </div>
-
-    <div>
-
-        <label>
-
-            Error Rate
+        <div>
+            <label for="errorRate">
+                実装ミス確率
+            </label>
 
             <input
                 id="errorRate"
                 type="number"
                 step="0.01"
-                value="0">
+                value="0"
+                min="0"
+                max="1"
+            >
 
-        </label>
+            <small>
+                0〜1で指定（例：0.05 = 5%）
+            </small>
+        </div>
 
     </div>
 
-    <button id="runButton">
-
-        Run Simulation
-
+    <button id="runButton" class="run-button">
+        シミュレーション開始
     </button>
 
-</div>
+</section>
 
 <section class="round-flow">
 

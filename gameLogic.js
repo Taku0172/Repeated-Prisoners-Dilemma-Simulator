@@ -144,12 +144,16 @@ export function simulateGame({
 
     const historyA = [];
     const historyB = [];
+
     const payoffHistoryA = [];
     const payoffHistoryB = [];
+
     const roundHistory = [];
     const eventHistory = [];
 
     for (let round = 1; round <= rounds; round++) {
+
+        // ① このラウンドの行動・利得を決定
         const result = playRound({
             strategyA,
             strategyB,
@@ -162,18 +166,8 @@ export function simulateGame({
             randomFn
         });
 
-        const events =
-            createRoundEvents({
-            round,
-            strategyA,
-            strategyB,
-            historyA,
-            historyB,
-            roundResult: result
-        });
 
-eventHistory.push(...events);
-
+        // ② 実際に行われた行動を履歴へ保存
         historyA.push(
             result.playerA.actualAction
         );
@@ -182,6 +176,8 @@ eventHistory.push(...events);
             result.playerB.actualAction
         );
 
+
+        // ③ このラウンドの利得を履歴へ保存
         payoffHistoryA.push(
             result.playerA.payoff
         );
@@ -190,6 +186,24 @@ eventHistory.push(...events);
             result.playerB.payoff
         );
 
+
+        // ④ このラウンドで発生したイベントを判定
+        const events =
+            createRoundEvents({
+                round,
+                strategyA,
+                strategyB,
+                historyA,
+                historyB,
+                roundResult: result
+            });
+
+        eventHistory.push(
+            ...events
+        );
+
+
+        // ⑤ ラウンド全体の情報を保存
         roundHistory.push({
             round,
             playerA: result.playerA,
@@ -197,14 +211,19 @@ eventHistory.push(...events);
         });
     }
 
+
+    // ⑥ シミュレーション結果を返す
     return {
         strategyA,
         strategyB,
         rounds,
+
         historyA,
         historyB,
+
         payoffHistoryA,
         payoffHistoryB,
+
         roundHistory,
         eventHistory
     };
